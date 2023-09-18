@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="home-link">Home</a>
+        <h1>Search Results for "{{ search_term }}"</h1>
+
+        {% if no_results_message %}
+        <p>{{ no_results_message }}</p>
+        {% endif %}
+
+
+        <ul class="video-list">
+            {% for doc in result %}
+                <li class="video-item">
+                    <div class="video-embed">
+                        <a href="{{ doc.url }}">
+                            <img src="{{ doc.thumbnail }}" alt="{{ doc.title }}" class="thumbnail-image">
+                        </a>
+                    </div>
+                    <div class="video-details">
+                        <h2><a href="{{ doc.url }}">{{ doc.title }}</a></h2>
+                        <!-- Inside the for loop -->
+                        {% if doc.timestamps|length >= 1 %}
+                        <p class="video-metadata"><a href="{{ doc.url }}&t={{ doc.timestamps[0] | timestamp_to_seconds }}">{{ doc.timestamps[0] }}</a> : {{ doc.sentences[0] | lower }}</p>
+                        {% endif %}
+                        {% if doc.timestamps|length >= 2 %}
+                        <p class="video-metadata"><a href="{{ doc.url }}&t={{ doc.timestamps[1] | timestamp_to_seconds }}">{{ doc.timestamps[1] }}</a> : {{ doc.sentences[1] | lower }}</p>
+                        {% endif %}
+                        {% if doc.timestamps|length == 0 %}
+                        <p class="video-metadata">No timestamps available</p>
+                        {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
