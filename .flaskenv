@@ -1,0 +1,2 @@
+MONGO_USERNAME=siddharthsajjive1
+MONGO_PASSWORD=mongopassword
